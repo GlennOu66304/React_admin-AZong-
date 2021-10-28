@@ -12,7 +12,7 @@ import { Checkbox } from "antd";
 const CheckboxGroup = Checkbox.Group;
 // class 组件
 class CheckboxAll extends Component {
-    constructor(props){
+    constructor(props) {
         super(props); // 初始化默认值 
         this.state = {
             checked_default: [],
@@ -22,11 +22,11 @@ class CheckboxAll extends Component {
             checkAll: false
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         const checked_list = this.props.data.child_item;
-        
+
         let checked_value = null;
-        if(checked_list && checked_list.length > 0) {
+        if (checked_list && checked_list.length > 0) {
             checked_value = checked_list.map(item => item.value);
         }
         this.setState({
@@ -35,11 +35,11 @@ class CheckboxAll extends Component {
         })
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.checkboxInit(nextProps.init);
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.actions.roleMenu({});
     }
 
@@ -48,11 +48,11 @@ class CheckboxAll extends Component {
         const check_list = data;
         // 过滤值
         let checked = [];
-        if(this.props.saveAllKey) {
+        if (this.props.saveAllKey) {
             checked = check_list.filter(item => {
-                return item.indexOf(this.props.data.value) != -1;
+                return item.indexOf(this.props.data.value) !== -1;
             })
-        }else{
+        } else {
             checked = check_list;
         }
         // 初始值
@@ -74,26 +74,26 @@ class CheckboxAll extends Component {
         let checkAll = false;
         // 存在ALL选项时
         let length = checked_list.length;
-        if(this.props.saveAllKey && checked_list.includes(this.props.data.value)) {
+        if (this.props.saveAllKey && checked_list.includes(this.props.data.value)) {
             length--;
         }
         // 部分选中
-        if(checked_length !== length){          
+        if (checked_length !== length) {
             indeterminate = true;
             checkAll = false;
         }
         // 全部
-        if(checked_length === length) {         // 全部选中：1、打勾；2、部分选中清除
+        if (checked_length === length) {         // 全部选中：1、打勾；2、部分选中清除
             indeterminate = false;
             checkAll = true;
         }
         // 都没有
-        if(length === 0){
+        if (length === 0) {
             indeterminate = false;
             checkAll = false;
         }
         // 更新选中的状态
-        this.setState({ 
+        this.setState({
             indeterminate,
             checkAll
         })
@@ -155,11 +155,11 @@ class CheckboxAll extends Component {
         const first = this.props.data;  // child_item
         // store
         let StoreChecked = this.props.checked;  // checked_all: { menu: {} }
-        if(!StoreChecked[checked_type]) { StoreChecked[checked_type] = {}; }
+        if (!StoreChecked[checked_type]) { StoreChecked[checked_type] = {}; }
         // 判断是否存在对象
-        if(!StoreChecked[checked_type][first.value]) { StoreChecked[checked_type][first.value] = {}; }
+        if (!StoreChecked[checked_type][first.value]) { StoreChecked[checked_type][first.value] = {}; }
         // 存储数据
-        if(checked.length > 0) {
+        if (checked.length > 0) {
             // 第一种：需要取文本
             // 匹配
             // const object = {};
@@ -169,25 +169,25 @@ class CheckboxAll extends Component {
             //         object[item] = options[0];
             //     }
             // })
-            
+
             // 第二种：不需要文本
             // 更新
             let checked_value = JSON.parse(JSON.stringify(checked));
-            if(this.props.saveAllKey && !checked_value.includes(this.props.data.value)) {
+            if (this.props.saveAllKey && !checked_value.includes(this.props.data.value)) {
                 checked_value.unshift(first.value);
             }
             StoreChecked[checked_type][first.value] = checked_value;
 
         }
         // 删除数据
-        if(checked.length === 0) {
+        if (checked.length === 0) {
             delete StoreChecked[checked_type][first.value];
         }
         this.props.actions.roleMenu(StoreChecked);
     }
-   
-    render(){
-        const { label, value, child_item } = this.props.data;
+
+    render() {
+        const { label, child_item } = this.props.data;
         const { checked_list, indeterminate, checkAll } = this.state;
         return (
             <Fragment>
@@ -196,7 +196,7 @@ class CheckboxAll extends Component {
                         <Checkbox indeterminate={indeterminate} checked={checkAll} onChange={this.onCheckAllChange}>{label}</Checkbox>
                     </div>
                     <div className="item">
-                        <CheckboxGroup options={child_item} value={checked_list} onChange={this.onChange} /><br/><br/>
+                        <CheckboxGroup options={child_item} value={checked_list} onChange={this.onChange} /><br /><br />
                     </div>
                 </div>
             </Fragment>
